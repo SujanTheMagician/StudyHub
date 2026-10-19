@@ -1,1 +1,111 @@
-/* Atham – Responsive design */
+/* Atham – Responsive design
+ * Breakpoints: 1024px (small laptop), 768px (tablet), 480px (phone)
+ */
+
+/* Small laptop */
+@media (max-width: 1024px) {
+  body {
+    grid-template-columns: 210px minmax(0, 1fr);
+  }
+
+  main {
+    padding: 24px;
+  }
+
+  .dashboard-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Tablet and phone: the sidebar becomes a scrollable menu bar under the header */
+@media (max-width: 768px) {
+  body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 64px auto 1fr;
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "main";
+  }
+
+  .sidebar {
+    z-index: 40;
+    height: auto;
+    overflow: visible;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+    gap: 6px;
+    padding: 8px 12px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .sidebar nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sidebar nav a {
+    flex: 0 0 auto;
+    min-height: 44px;
+    gap: 8px;
+    padding: 0 14px;
+    white-space: nowrap;
+    scroll-snap-align: start;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+  }
+
+  main {
+    padding: 20px 16px;
+  }
+
+  main > section {
+    margin-bottom: 24px;
+    /* header (64px) + menu bar (61px) */
+    scroll-margin-top: 136px;
+  }
+}
+
+/* Phone */
+@media (max-width: 480px) {
+  .app-header {
+    padding: 0 16px;
+  }
+
+  /* The profile is only a placeholder until login exists */
+  .user-info {
+    display: none;
+  }
+
+  #dashboard h1 {
+    font-size: 24px;
+  }
+
+  .dashboard-summary {
+    gap: 12px;
+  }
+
+  .summary-card {
+    padding: 16px;
+  }
+
+  .summary-card p {
+    font-size: 20px;
+  }
+
+  .summary-card::after {
+    display: none;
+  }
+}
+
+/* Phones turned sideways: let the menu scroll away to give content more room */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sidebar {
+    position: static;
+  }
+}
