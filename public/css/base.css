@@ -1,1 +1,33 @@
-/* Nithya – Dark / Light theme (colour variables, :root and body only) */
+
+/* Nithiya – Dark / Light theme (colour variables, :root and body only) */
+
+:root {
+  color-scheme: light;
+
+  --bg: #f5f7fb;
+  --card-bg: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --primary: #4f46e5;
+  --success: #16a34a;
+  --danger: #dc2626;
+}
+
+body.dark-mode {
+  color-scheme: dark;
+
+  --bg: #111827;
+  --card-bg: #1f2937;
+  --text: #f1f5f9;
+  --text-muted: #cbd5e1;
+  --border: #374151;
+  --primary: #818cf8;
+  --success: #4ade80;
+  --danger: #f87171;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
