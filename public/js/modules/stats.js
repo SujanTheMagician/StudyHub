@@ -1,69 +1,176 @@
 // Anmol – Progress and Stats
 
-const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-const focusTime = JSON.parse(localStorage.getItem("focusTime")) || [];
-const habits = JSON.parse(localStorage.getItem("habits")) || [false, false, false, false];
+(function renderStats() {
+  const statsTasks = loadData("tasks") || [];
+  const statsFocus = loadData("focus") || [];
+  const statsHabits = loadData("habits") || [];
 
-// 1. Tasks completed
-const completedTasks = tasks.filter(task => task.completed).length;
-document.getElementById("tasksCompleted").textContent = completedTasks;
+  // PRD shape: tasks use "done" (not "completed")
+  const statsTaskCount = statsTasks.filter((task) => task.done === true).length;
 
-// 2. Total focus hours (focusTime stores minutes)
-const totalMinutes = focusTime.reduce((sum, minutes) => sum + minutes, 0);
-document.getElementById("focusHours").textContent =
-    (totalMinutes / 60).toFixed(1) + "h";
+  const statsTotalMinutes = statsFocus.reduce(
+    (total, session) => total + (Number(session.minutes) || 0),
+    0,
+  );
 
-// 3. Study streak (number of consecutive study days)
-let streak = 0;
-let day = new Date();
+  document.getElementById("stats-tasks").textContent = statsTaskCount;
+  document.getElementById("stats-focus").textContent =
+    `${(statsTotalMinutes / 60).toFixed(1)}h`;
 
-const studyDates = JSON.parse(localStorage.getItem("studyDates")) || [];
+  function statsDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
 
-while (studyDates.includes(day.toLocaleDateString("en-CA"))) {
-    streak++;
-    day.setDate(day.getDate() - 1);
-}
+    return `${year}-${month}-${day}`;
+  }
 
-document.getElementById("studyStreak").textContent = streak + " days";
+  // Turn a saved date or time ("2026-10-19", an ISO string or Date.now())
+  // into "YYYY-MM-DD" in the student's own time zone
+  function statsDayOf(value) {
+    if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return value;
+    }
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : statsDate(date);
+  }
 
-// 4. Weekly focus chart
-const weeklyHours = focusTime.slice(-7).map(minutes => minutes / 60);
+  // PRD shapes: focus = { id, startedAt, minutes },
+  // habits = { id, name, completedDates: ["YYYY-MM-DD"] },
+  // tasks = { ..., done, completedAt }
+  const statsStudyDates = new Set(
+    [
+      ...statsFocus
+        .filter((session) => Number(session.minutes) > 0)
+        .map((session) => statsDayOf(session.startedAt)),
 
-new Chart(document.getElementById("focusChart"), {
-    type: "bar",
-    data: {
-        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        datasets: [{
+      ...statsHabits.flatMap((habit) => habit.completedDates || []),
+
+      ...statsTasks
+        .filter((task) => task.done === true && task.completedAt)
+        .map((task) => statsDayOf(task.completedAt)),
+    ].filter(Boolean),
+  );
+
+  const statsToday = new Date();
+  statsToday.setHours(12, 0, 0, 0);
+
+  let statsStreak = 0;
+
+  while (statsStudyDates.has(statsDate(statsToday))) {
+    statsStreak++;
+    statsToday.setDate(statsToday.getDate() - 1);
+  }
+
+  document.getElementById("stats-streak").textContent = `${statsStreak} days`;
+
+  const statsLabels = [];
+  const statsHours = [];
+
+  for (let offset = 6; offset >= 0; offset--) {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() - offset);
+
+    const dateKey = statsDate(date);
+
+    statsLabels.push(
+      date.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+      }),
+    );
+
+    const minutes = statsFocus
+      .filter((session) => statsDayOf(session.startedAt) === dateKey)
+      .reduce((total, session) => total + (Number(session.minutes) || 0), 0);
+
+    statsHours.push(minutes / 60);
+  }
+
+  const statsHasFocus = statsFocus.some(
+    (session) => Number(session.minutes) > 0,
+  );
+  const statsChartWrapper = document.querySelector(
+    "#stats .stats-chart-wrapper",
+  );
+
+  document.getElementById("stats-empty").hidden = statsHasFocus;
+  document.getElementById("stats-chart").hidden = !statsHasFocus;
+  statsChartWrapper.classList.toggle(
+    "stats-chart-wrapper--empty",
+    !statsHasFocus,
+  );
+
+  if (!statsHasFocus) return;
+
+  function statsCreateChart() {
+    const statsElement = document.getElementById("stats");
+    const statsStyles = getComputedStyle(statsElement);
+
+    const statsPrimary =
+      statsStyles.getPropertyValue("--primary").trim() || "Highlight";
+    const statsText =
+      statsStyles.getPropertyValue("--text").trim() || "CanvasText";
+
+    new Chart(document.getElementById("stats-chart"), {
+      type: "bar",
+      data: {
+        labels: statsLabels,
+        datasets: [
+          {
             label: "Focus hours",
-            data: weeklyHours,
-            backgroundColor: "#6366f1"
-        }]
-    },
-    options: {
+            data: statsHours,
+            backgroundColor: statsPrimary,
+            borderRadius: 5,
+          },
+        ],
+      },
+      options: {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
         scales: {
-            y: { beginAtZero: true }
-        }
-    }
-});
-
-// 5. Daily habit tracker
-const habitList = document.getElementById("habitList");
-
-habits.forEach((done, index) => {
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = done;
-
-    checkbox.addEventListener("change", () => {
-        habits[index] = checkbox.checked;
-        localStorage.setItem("habits", JSON.stringify(habits));
+          x: {
+            ticks: {
+              color: statsText,
+            },
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: "Hours",
+              color: statsText,
+            },
+            ticks: {
+              color: statsText,
+            },
+          },
+        },
+      },
     });
+  }
 
-    const label = document.createElement("label");
-    label.append(checkbox, " Habit " + (index + 1));
-    habitList.appendChild(label);
-});
+  if (window.Chart) {
+    statsCreateChart();
+  } else {
+    const statsScript = document.createElement("script");
+    statsScript.src =
+      "https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js";
 
+    statsScript.onload = statsCreateChart;
+    statsScript.onerror = () => {
+      document.getElementById("stats-empty").hidden = false;
+      document.getElementById("stats-empty").textContent =
+        "Chart could not load. Check your internet connection.";
+      statsChartWrapper.classList.add("stats-chart-wrapper--empty");
+    };
 
+    document.head.appendChild(statsScript);
+  }
+})();
