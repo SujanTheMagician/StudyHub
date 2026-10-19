@@ -1,1 +1,18 @@
 /* Nithya – Dark / Light theme (colour variables, :root and body only) */
+
+:root {
+  color-scheme: light;
+  --bg: #f1f5f9;
+  --card-bg: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #dbe3ed;
+  --primary: #4f46e5;
+  --success: #15803d;
+  --danger: #dc2626;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}

@@ -42,120 +42,43 @@
       <section id="calendar"></section>
 
       <!-- Anmol – Progress and Stats -->
-      <section id="stats">
-
-    <!-- Chart.js library for graphs -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="stats.js" defer></script>
-</head>
-<body>
-    <main class="dashboard">
-
-        <header class="topbar">
-            <div>
-                <h1>StudyHub</h1>
-                <p class="subtitle">Progress & Stats</p>
-            </div>
-
-            <button id="themeToggle" class="theme-btn"
-                    type="button" aria-label="Toggle dark mode">
-                🌙 Dark mode
-            </button>
-        </header>
-
-        <section class="welcome">
-            <div>
-                <p class="eyebrow">YOUR LEARNING JOURNEY</p>
-                <h2>Your study overview</h2>
-                <p>Track your focus, celebrate your progress.</p>
-            </div>
-        </section>
-
-        <!-- KPI cards -->
-        <section class="stats-grid" aria-label="Study statistics">
-
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span class="stat-icon green">✓</span>
-                    <span class="stat-label">Tasks completed</span>
-                </div>
-                <h3 id="tasksCompleted">0</h3>
-                <p>Completed study tasks</p>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span class="stat-icon blue">◷</span>
-                    <span class="stat-label">Focus hours</span>
-                </div>
-                <h3 id="focusHours">0h</h3>
-                <p>Total recorded study time</p>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span class="stat-icon orange">🔥</span>
-                    <span class="stat-label">Study streak</span>
-                </div>
-                <h3 id="studyStreak">0 days</h3>
-                <p>Consecutive days of studying</p>
-            </article>
-
-        </section>
-
-        <!-- Weekly chart -->
-        <section class="panel chart-panel">
-            <div class="panel-heading">
-                <div>
-                    <h2>Focus activity</h2>
-                    <p>Your daily study time</p>
-                </div>
-
-                <select id="rangeSelector" aria-label="Chart date range">
-                    <option value="7">Last 7 days</option>
-                    <option value="30">Last 30 days</option>
-                </select>
-            </div>
-
-            <div class="chart-wrapper">
-                <canvas id="focusChart"
-                        role="img"
-                        aria-label="Bar chart showing daily focus hours">
-                </canvas>
-            </div>
-        </section>
-
-        <!-- Habit tracker -->
-        <section class="panel habit-panel">
-            <div class="panel-heading">
-                <div>
-                    <h2>Daily habits</h2>
-                    <p>Build consistency, one day at a time.</p>
-                </div>
-
-                <span id="habitCount" class="habit-count">0 / 4</span>
-            </div>
-
-            <div class="progress-track">
-                <div id="habitProgress" class="progress-fill"></div>
-            </div>
-
-            <div id="habitList" class="habit-list"></div>
-        </section>
-
-        <footer>
-            <p>StudyHub · Progress & Stats Module</p>
-            <p id="saveStatus" aria-live="polite">
-                Your progress is saved in this browser.
-            </p>
-        </footer>
-
-    </main>
-</body>
-</html>
-</section>
       
-    </main>
+
+<section id="stats">
+  <div class="stats-heading">
+    <div>
+      <h2>Progress &amp; Stats</h2>
+      <p>Your study progress at a glance</p>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <article class="stats-card">
+      <p>Tasks Completed</p>
+      <h3 id="stats-tasks">0</h3>
+    </article>
+
+    <article class="stats-card">
+      <p>Focus Hours</p>
+      <h3 id="stats-focus">0h</h3>
+    </article>
+
+    <article class="stats-card">
+      <p>Study Streak</p>
+      <h3 id="stats-streak">0 days</h3>
+    </article>
+  </div>
+
+  <article class="stats-card stats-chart-card">
+    <h3>Focus Time — Last 7 Days</h3>
+    <div class="stats-chart-wrapper">
+      <canvas id="stats-chart"></canvas>
+      <p id="stats-empty" hidden>No focus data recorded yet.</p>
+    </div>
+  </article>
+</section>
+
+      
 
     <script src="js/api.js"></script>
     <script src="js/theme.js"></script>
