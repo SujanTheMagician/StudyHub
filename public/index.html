@@ -13,18 +13,81 @@
     <link rel="stylesheet" href="css/modules/habits.css" />
     <link rel="stylesheet" href="css/modules/calendar.css" />
     <link rel="stylesheet" href="css/modules/stats.css" />
+    <link rel="stylesheet" href="css/modules/quote.css" />
+    <link rel="stylesheet" href="css/modules/auth.css" />
     <link rel="stylesheet" href="css/animations.css" />
     <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
-    <!-- Sai Priyan – header, sidebar and dashboard layout go here -->
+    <header class="app-header">
+      <a href="#dashboard" class="logo">StudyHub</a>
+
+      <!-- Profile information will be populated dynamically -->
+      <div class="user-info">
+        <img
+          id="profile-pic"
+          src=""
+          alt="Profile Picture"
+          class="profile-pic"
+        />
+
+        <span id="user-name" class="user-name"></span>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <nav aria-label="Main navigation">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#quote">Daily Quote</a>
+        <a href="#todo">To-Do List</a>
+        <a href="#timer">Focus Timer</a>
+        <a href="#notes">Notes</a>
+        <a href="#habits">Habit Tracker</a>
+        <a href="#calendar">Calendar and Planner</a>
+        <a href="#stats">Progress and Stats</a>
+      </nav>
+    </aside>
 
     <main>
-      <!-- Sai Priyan – Dashboard home -->
-      <section id="dashboard"></section>
+      <!-- Sai Priyan - Dashboard home -->
+      <section id="dashboard">
+        <h1>Dashboard</h1>
+        <!-- Summary cards: presentation structure only -->
+        <div class="dashboard-summary">
+          <article class="summary-card">
+            <h2>Tasks</h2>
+            <p>Summary</p>
+          </article>
+
+          <article class="summary-card">
+            <h2>Focus Time</h2>
+            <p>Summary</p>
+          </article>
+
+          <article class="summary-card">
+            <h2>Habits</h2>
+            <p>Summary</p>
+          </article>
+
+          <article class="summary-card">
+            <h2>Progress</h2>
+            <p>Summary</p>
+          </article>
+        </div>
+      </section>
 
       <!-- Sujan – Daily Quote -->
-      <section id="quote"></section>
+      <section id="quote">
+        <figure class="quote-card">
+          <p class="quote-label">Quote of the day</p>
+          <blockquote id="quote-text" class="quote-text">
+            Loading today's quote…
+          </blockquote>
+          <figcaption>
+            <cite id="quote-author" class="quote-author"></cite>
+          </figcaption>
+        </figure>
+      </section>
 
       <!-- Adil – To-Do List -->
       <section id="todo"></section>
@@ -33,7 +96,108 @@
       <section id="timer"></section>
 
       <!-- Ashmitha – Notes -->
-      <section id="notes"></section>
+      <section id="notes">
+        <div class="notes-hero">
+        <div>
+          <h2 class="notes-heading">📝 My Notes</h2>
+          <p class="notes-subheading">
+            Capture ideas, pin the important ones, find them fast.
+          </p>
+        </div>
+
+        <div class="notes-stats">
+          <div class="notes-stat">
+            <span id="notes-stat-total" class="notes-stat-number">0</span>
+            <span class="notes-stat-label">Notes</span>
+          </div>
+          <div class="notes-stat">
+            <span id="notes-stat-pinned" class="notes-stat-number">0</span>
+            <span class="notes-stat-label">Pinned</span>
+          </div>
+          <div class="notes-stat">
+            <span id="notes-stat-words" class="notes-stat-number">0</span>
+            <span class="notes-stat-label">Words</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="notes-editor">
+        <div class="notes-editor-header">
+          <span id="notes-editor-heading">✨ New note</span>
+          <span class="notes-editor-hint">Ctrl + Enter to save · Esc to cancel</span>
+        </div>
+
+        <div id="notes-editor-body" class="notes-editor-body notes-card-default">
+          <input
+            id="notes-title"
+            type="text"
+            placeholder="Give your note a title"
+            maxlength="80"
+          />
+          <textarea
+            id="notes-content"
+            rows="4"
+            maxlength="2000"
+            placeholder="Write your note here..."
+          ></textarea>
+
+          <div class="notes-editor-footer">
+            <div class="notes-colors" id="notes-colors">
+              <button type="button" class="notes-color-btn notes-color-default notes-color-active" data-color="default" aria-label="No colour" title="No colour"></button>
+              <button type="button" class="notes-color-btn notes-color-blue" data-color="blue" aria-label="Blue" title="Blue"></button>
+              <button type="button" class="notes-color-btn notes-color-green" data-color="green" aria-label="Green" title="Green"></button>
+              <button type="button" class="notes-color-btn notes-color-red" data-color="red" aria-label="Red" title="Red"></button>
+              <button type="button" class="notes-color-btn notes-color-purple" data-color="purple" aria-label="Purple" title="Purple"></button>
+              <button type="button" class="notes-color-btn notes-color-amber" data-color="amber" aria-label="Amber" title="Amber"></button>
+            </div>
+
+            <span id="notes-char-count" class="notes-char-count">0 / 2000</span>
+
+            <div class="notes-editor-buttons">
+              <button type="button" id="notes-cancel-btn" class="notes-cancel-btn" hidden>Cancel</button>
+              <button type="button" id="notes-save-btn" class="notes-save-btn">Save note</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notes-toolbar">
+        <input id="notes-search" type="search" placeholder="🔍 Search notes..." />
+
+        <div class="notes-filters" id="notes-filters">
+          <button type="button" class="notes-filter-btn notes-filter-active" data-filter="all">All</button>
+          <button type="button" class="notes-filter-btn" data-filter="pinned">📌 Pinned</button>
+        </div>
+
+        <select id="notes-sort" aria-label="Sort notes">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="updated">Recently updated</option>
+          <option value="az">A to Z</option>
+        </select>
+
+        <div class="notes-views" id="notes-views">
+          <button type="button" class="notes-view-btn notes-view-active" data-view="grid" title="Grid view" aria-label="Grid view">▦</button>
+          <button type="button" class="notes-view-btn" data-view="list" title="List view" aria-label="List view">☰</button>
+        </div>
+      </div>
+
+      <p id="notes-result-count" class="notes-result-count"></p>
+
+      <div id="notes-list" class="notes-grid"></div>
+
+      <dialog id="notes-confirm" class="notes-confirm">
+        <h3 class="notes-confirm-title">Delete note?</h3>
+        <p id="notes-confirm-text" class="notes-confirm-text"></p>
+        <div class="notes-confirm-buttons">
+          <button type="button" id="notes-confirm-cancel" class="notes-cancel-btn">Cancel</button>
+          <button type="button" id="notes-confirm-ok" class="notes-danger-btn">Delete</button>
+        </div>
+      </dialog>
+
+      <div id="notes-toast" class="notes-toast" role="status" aria-live="polite"></div>
+ 
+      </section>
 
       <!-- Vignesh – Habit Tracker with streaks -->
       <section id="habits"></section>
@@ -44,39 +208,39 @@
       <!-- Anmol – Progress and Stats -->
       
 
-<section id="stats">
-  <div class="stats-heading">
-    <div>
-      <h2>Progress &amp; Stats</h2>
-      <p>Your study progress at a glance</p>
-    </div>
-  </div>
+      <section id="stats">
+        <div class="stats-heading">
+          <div>
+            <h2>Progress &amp; Stats</h2>
+            <p>Your study progress at a glance</p>
+          </div>
+        </div>
 
-  <div class="stats-grid">
-    <article class="stats-card">
-      <p>Tasks Completed</p>
-      <h3 id="stats-tasks">0</h3>
-    </article>
+        <div class="stats-grid">
+          <article class="stats-card">
+            <p>Tasks Completed</p>
+            <h3 id="stats-tasks">0</h3>
+          </article>
 
-    <article class="stats-card">
-      <p>Focus Hours</p>
-      <h3 id="stats-focus">0h</h3>
-    </article>
+          <article class="stats-card">
+            <p>Focus Hours</p>
+            <h3 id="stats-focus">0h</h3>
+          </article>
 
-    <article class="stats-card">
-      <p>Study Streak</p>
-      <h3 id="stats-streak">0 days</h3>
-    </article>
-  </div>
+          <article class="stats-card">
+            <p>Study Streak</p>
+            <h3 id="stats-streak">0 days</h3>
+          </article>
+        </div>
 
-  <article class="stats-card stats-chart-card">
-    <h3>Focus Time — Last 7 Days</h3>
-    <div class="stats-chart-wrapper">
-      <canvas id="stats-chart"></canvas>
-      <p id="stats-empty" hidden>No focus data recorded yet.</p>
-    </div>
-  </article>
-</section>
+        <article class="stats-card stats-chart-card">
+          <h3>Focus Time — Last 7 Days</h3>
+          <div class="stats-chart-wrapper">
+            <canvas id="stats-chart"></canvas>
+            <p id="stats-empty" hidden>No focus data recorded yet.</p>
+          </div>
+        </article>
+      </section>
 
       
 

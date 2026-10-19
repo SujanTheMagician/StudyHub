@@ -5,9 +5,8 @@
   const statsFocus = loadData("focus") || [];
   const statsHabits = loadData("habits") || [];
 
-  const statsTaskCount = statsTasks.filter(
-    (task) => task.completed === true,
-  ).length;
+  // PRD shape: tasks use "done" (not "completed")
+  const statsTaskCount = statsTasks.filter((task) => task.done === true).length;
 
   const statsTotalMinutes = statsFocus.reduce(
     (total, session) => total + (Number(session.minutes) || 0),
@@ -26,15 +25,32 @@
     return `${year}-${month}-${day}`;
   }
 
-  const statsStudyDates = new Set([
-    ...statsFocus
-      .filter((session) => Number(session.minutes) > 0)
-      .map((session) => session.date),
+  // Turn a saved date or time ("2026-10-19", an ISO string or Date.now())
+  // into "YYYY-MM-DD" in the student's own time zone
+  function statsDayOf(value) {
+    if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return value;
+    }
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : statsDate(date);
+  }
 
-    ...statsHabits
-      .filter((habit) => habit.completed === true)
-      .map((habit) => habit.date),
-  ].filter(Boolean));
+  // PRD shapes: focus = { id, startedAt, minutes },
+  // habits = { id, name, completedDates: ["YYYY-MM-DD"] },
+  // tasks = { ..., done, completedAt }
+  const statsStudyDates = new Set(
+    [
+      ...statsFocus
+        .filter((session) => Number(session.minutes) > 0)
+        .map((session) => statsDayOf(session.startedAt)),
+
+      ...statsHabits.flatMap((habit) => habit.completedDates || []),
+
+      ...statsTasks
+        .filter((task) => task.done === true && task.completedAt)
+        .map((task) => statsDayOf(task.completedAt)),
+    ].filter(Boolean),
+  );
 
   const statsToday = new Date();
   statsToday.setHours(12, 0, 0, 0);
@@ -46,8 +62,7 @@
     statsToday.setDate(statsToday.getDate() - 1);
   }
 
-  document.getElementById("stats-streak").textContent =
-    `${statsStreak} days`;
+  document.getElementById("stats-streak").textContent = `${statsStreak} days`;
 
   const statsLabels = [];
   const statsHours = [];
@@ -67,11 +82,8 @@
     );
 
     const minutes = statsFocus
-      .filter((session) => session.date === dateKey)
-      .reduce(
-        (total, session) => total + (Number(session.minutes) || 0),
-        0,
-      );
+      .filter((session) => statsDayOf(session.startedAt) === dateKey)
+      .reduce((total, session) => total + (Number(session.minutes) || 0), 0);
 
     statsHours.push(minutes / 60);
   }
