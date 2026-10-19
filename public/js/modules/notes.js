@@ -159,8 +159,9 @@ function editNote(id) {
   notesEditorHeading.textContent = "✏️ Editing note";
   notesSaveBtn.textContent = "Update note";
   notesCancelBtn.hidden = false;
-  notesTitleInput.focus();
-  notesEditorBody.scrollIntoView({ behavior: "smooth" });
+  // Scroll the editor to the middle of the screen (not under the sticky header)
+  notesEditorBody.scrollIntoView({ behavior: "smooth", block: "center" });
+  notesTitleInput.focus({ preventScroll: true });
 }
 
 // Make a copy of a note

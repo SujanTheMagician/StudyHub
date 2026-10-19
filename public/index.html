@@ -130,12 +130,14 @@
         <div id="notes-editor-body" class="notes-editor-body notes-card-default">
           <input
             id="notes-title"
+            aria-label="Note title"
             type="text"
             placeholder="Give your note a title"
             maxlength="80"
           />
           <textarea
             id="notes-content"
+            aria-label="Note text"
             rows="4"
             maxlength="2000"
             placeholder="Write your note here..."
@@ -162,7 +164,7 @@
       </div>
 
       <div class="notes-toolbar">
-        <input id="notes-search" type="search" placeholder="🔍 Search notes..." />
+        <input id="notes-search" type="search" aria-label="Search notes" placeholder="🔍 Search notes..." />
 
         <div class="notes-filters" id="notes-filters">
           <button type="button" class="notes-filter-btn notes-filter-active" data-filter="all">All</button>
