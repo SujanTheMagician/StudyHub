@@ -1,18 +1,52 @@
-/* Nithya – Dark / Light theme (colour variables, :root and body only) */
+/* Nithiya – Dark / Light theme (colour variables, :root and body only) */
 
 :root {
   color-scheme: light;
-  --bg: #f1f5f9;
+
+  --bg: #f5f7fb;
   --card-bg: #ffffff;
   --text: #1e293b;
   --text-muted: #64748b;
-  --border: #dbe3ed;
+  --border: #e2e8f0;
   --primary: #4f46e5;
-  --success: #15803d;
+  --success: #16a34a;
   --danger: #dc2626;
+  --warning: #d97706;
+
+  /* Shared look for every module */
+  --primary-soft: #eef2ff;
+  --shadow-sm: 0 1px 3px rgb(15 23 42 / 0.06), 0 1px 2px rgb(15 23 42 / 0.04);
+  --shadow-md: 0 12px 28px rgb(15 23 42 / 0.1);
+  --radius: 14px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+body.dark-mode {
+  color-scheme: dark;
+
+  --bg: #0f172a;
+  --card-bg: #1e293b;
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border: #334155;
+  --primary: #818cf8;
+  --success: #4ade80;
+  --danger: #f87171;
+  --warning: #fbbf24;
+
+  --primary-soft: #312e81;
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 12px 28px rgb(0 0 0 / 0.45);
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--text);
+  font-family: var(--font);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }

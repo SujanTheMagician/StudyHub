@@ -1,1 +1,203 @@
-/* Biswa – Animations and hover effects */
+/* Biswa – Animations and hover effects
+ *
+ * Shared classes any module can use:
+ *   .anim-fade-in     fade in
+ *   .anim-fade-up     fade in while sliding up
+ *   .anim-pop-in      fade in while growing (new cards, list items)
+ *   .anim-shake       small shake (wrong input)
+ *   .anim-hover-lift  card lifts on hover
+ *   .anim-stagger     children appear one after another
+ *
+ * Everything here turns off when the device asks for reduced motion.
+ */
+
+@keyframes anim-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes anim-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes anim-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes anim-shake {
+  0%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+@keyframes anim-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Shared classes */
+  .anim-fade-in {
+    animation: anim-fade-in 0.4s ease both;
+  }
+  .anim-fade-up {
+    animation: anim-fade-up 0.5s var(--ease) both;
+  }
+  .anim-pop-in {
+    animation: anim-pop-in 0.35s var(--ease) both;
+  }
+  .anim-shake {
+    animation: anim-shake 0.3s ease 2;
+  }
+  .anim-stagger > * {
+    animation: anim-fade-up 0.45s var(--ease) both;
+  }
+  .anim-stagger > :nth-child(2) {
+    animation-delay: 60ms;
+  }
+  .anim-stagger > :nth-child(3) {
+    animation-delay: 120ms;
+  }
+  .anim-stagger > :nth-child(4) {
+    animation-delay: 180ms;
+  }
+  .anim-stagger > :nth-child(n + 5) {
+    animation-delay: 240ms;
+  }
+
+  /* Page load: header fades in, menu links and sections slide up one by one */
+  .app-header {
+    animation: anim-fade-in 0.4s ease both;
+  }
+  .sidebar nav a {
+    animation: anim-fade-up 0.4s var(--ease) both;
+  }
+  .sidebar nav a:nth-child(2) {
+    animation-delay: 40ms;
+  }
+  .sidebar nav a:nth-child(3) {
+    animation-delay: 80ms;
+  }
+  .sidebar nav a:nth-child(4) {
+    animation-delay: 120ms;
+  }
+  .sidebar nav a:nth-child(5) {
+    animation-delay: 160ms;
+  }
+  .sidebar nav a:nth-child(6) {
+    animation-delay: 200ms;
+  }
+  .sidebar nav a:nth-child(7) {
+    animation-delay: 240ms;
+  }
+  .sidebar nav a:nth-child(8) {
+    animation-delay: 280ms;
+  }
+
+  main > section {
+    animation: anim-fade-up 0.6s var(--ease) both;
+  }
+  main > section:nth-child(2) {
+    animation-delay: 120ms;
+  }
+
+  /* Summary cards pop in one after another */
+  .summary-card {
+    animation: anim-pop-in 0.45s var(--ease) both;
+  }
+  .summary-card:nth-child(1) {
+    animation-delay: 150ms;
+  }
+  .summary-card:nth-child(2) {
+    animation-delay: 220ms;
+  }
+  .summary-card:nth-child(3) {
+    animation-delay: 290ms;
+  }
+  .summary-card:nth-child(4) {
+    animation-delay: 360ms;
+  }
+
+  /* Lower sections reveal as you scroll to them (browsers that support it) */
+  @supports (animation-timeline: view()) {
+    main > section:nth-child(n + 3) {
+      animation: anim-fade-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+
+  /* Smooth colour change when switching theme, smooth hover movement */
+  .app-header,
+  .sidebar,
+  .sidebar nav a,
+  .summary-card,
+  .quote-card,
+  .anim-hover-lift {
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.2s ease,
+      transform 0.25s var(--ease),
+      box-shadow 0.25s var(--ease);
+  }
+
+  /* Hover effects only on devices with a mouse */
+  @media (hover: hover) {
+    .summary-card:hover,
+    .quote-card:hover,
+    .anim-hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .summary-card:hover::after {
+      animation: anim-float 1.2s ease-in-out infinite;
+      opacity: 0.3;
+    }
+
+    .sidebar nav a:hover {
+      transform: translateX(4px);
+    }
+
+    .logo:hover::before {
+      animation: anim-float 1s ease-in-out infinite;
+    }
+  }
+
+  /* Buttons give a small "press" feedback */
+  main button:active,
+  #theme-toggle:active {
+    transform: scale(0.96);
+  }
+}
