@@ -4,13 +4,14 @@
   "type": "module",
   "description": "StudyHub – student productivity dashboard (frontend in public/, API in server/ and netlify/)",
   "scripts": {
+    "build": "node server/migrate.js",
     "dev": "netlify dev",
-    "db:migrate": "netlify database migrations apply",
+    "db:migrate": "node server/migrate.js",
     "test:api": "node server/test-api.js"
   },
   "dependencies": {
-    "@netlify/database": "2.0.1",
     "express": "4.22.1",
+    "pg": "8.16.3",
     "serverless-http": "4.0.0"
   },
   "engines": {

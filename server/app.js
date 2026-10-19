@@ -4,14 +4,15 @@
 //   POST /api/login         { email, password }        -> { user }
 //   POST /api/logout                                   -> { ok }
 //   GET  /api/me                                       -> { user }
-//   GET  /api/data                                     -> { tasks: [], focus: [], ... }
+//   DELETE /api/me          { password }               -> { ok }  (deletes the account and all its data)
+//   GET  /api/data                                    -> { tasks: [], focus: [], ... }
 //   GET  /api/data/:name                               -> [ ...items ]
 //   PUT  /api/data/:name    [ ...items ]               -> { ok, count }
 //
 // Every /api/data call only reads or writes the logged-in student's rows.
 
 import express from "express";
-import { getDatabase } from "@netlify/database";
+import { getPool } from "./db.js";
 import {
   SESSION_COOKIE,
   checkPassword,
@@ -34,10 +35,6 @@ const COLLECTION_TABLES = {
 
 const MAX_ITEMS_PER_COLLECTION = 5000;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function getPool() {
-  return getDatabase().pool;
-}
 
 function publicUser(row) {
   return { id: String(row.id), name: row.name, email: row.email };
@@ -146,6 +143,28 @@ router.post("/logout", function (req, res) {
   res.set("Set-Cookie", clearedSessionCookie());
   res.json({ ok: true });
 });
+
+// Delete the account. Every task, note, habit, etc. goes too (ON DELETE CASCADE).
+router.delete(
+  "/me",
+  requireUser,
+  handleAsync(async function (req, res) {
+    const result = await getPool().query(
+      "SELECT password_hash FROM users WHERE id = $1",
+      [req.userId],
+    );
+    const user = result.rows[0];
+    if (
+      !user ||
+      !checkPassword(String(req.body.password || ""), user.password_hash)
+    ) {
+      return sendError(res, 401, "Wrong password");
+    }
+    await getPool().query("DELETE FROM users WHERE id = $1", [req.userId]);
+    res.set("Set-Cookie", clearedSessionCookie());
+    res.json({ ok: true });
+  }),
+);
 
 router.get(
   "/me",

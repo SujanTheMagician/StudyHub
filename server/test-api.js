@@ -121,4 +121,14 @@ assert.equal(r.status, 401, "forged session rejected");
 r = await call("POST", "/api/logout", {}, cookieA);
 assert.equal(r.status, 200);
 
+// Delete both test accounts so the test leaves nothing behind
+r = await call("DELETE", "/api/me", { password: "wrong-password" }, cookieA);
+assert.equal(r.status, 401, "delete needs the right password");
+r = await call("DELETE", "/api/me", { password }, cookieA);
+assert.equal(r.status, 200, "account A deleted");
+r = await call("DELETE", "/api/me", { password }, cookieB);
+assert.equal(r.status, 200, "account B deleted");
+r = await call("GET", "/api/me", undefined, cookieA);
+assert.equal(r.status, 401, "deleted account cannot be used");
+
 console.log("✅ All API checks passed against " + BASE);

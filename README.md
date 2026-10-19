@@ -96,10 +96,10 @@ On Live Server there is no backend, so the app saves in the browser only (like b
 | Login page | `public/login.html`, `public/js/login.js`, `public/css/modules/auth.css` |
 | API (Express) | `server/app.js`, run by `netlify/functions/api.js` at `/api/*` |
 | Passwords and sessions | `server/auth.js` (scrypt hashes, signed HttpOnly cookie) |
-| Database (Postgres) | Netlify Database. Tables are in `netlify/database/migrations/` and are applied on every deploy; deploy previews get their own copy of the data |
-| Secret | `SESSION_SECRET` is set in Netlify environment variables. Never commit it |
+| Database (Postgres) | Neon (free). Connection in `server/db.js`. Tables are in `server/migrations/` and `server/migrate.js` applies new ones on every Netlify deploy |
+| Secrets | `DATABASE_URL` and `SESSION_SECRET` are set in Netlify environment variables. Never commit them |
 
-API: `POST /api/signup`, `POST /api/login`, `POST /api/logout`, `GET /api/me`, `GET /api/data`, `GET /api/data/:name`, `PUT /api/data/:name`.
+API: `POST /api/signup`, `POST /api/login`, `POST /api/logout`, `GET /api/me`, `DELETE /api/me`, `GET /api/data`, `GET /api/data/:name`, `PUT /api/data/:name`.
 
 Run the full app with the backend on your laptop:
 
@@ -107,12 +107,11 @@ Run the full app with the backend on your laptop:
 npm install
 npx netlify-cli login
 npx netlify-cli link --name studyhub-students
-npm run dev                # http://localhost:8888 with a local database
-npm run db:migrate         # once, in a second terminal: create the tables
-npm run test:api           # checks signup, login, saving and privacy
+npm run dev                # http://localhost:8888, uses DATABASE_URL from Netlify
+npm run test:api           # checks signup, login, saving and privacy (cleans up after itself)
 ```
 
-To change the database, add a new file such as `netlify/database/migrations/0002_add_subject.sql`. Never edit a migration that is already live.
+To change the database, add a new file such as `server/migrations/0002_add_subject.sql`. Never edit a migration that is already live.
 
 ## How to run the app
 
