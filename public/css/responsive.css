@@ -77,8 +77,13 @@
     padding: 0 16px;
   }
 
-  /* The profile is only a placeholder until login exists */
+  /* Keep only the log out button next to the theme button */
   .user-info {
+    margin-right: 136px;
+  }
+
+  .user-name,
+  .user-info::before {
     display: none;
   }
 

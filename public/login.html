@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log in · StudyHub</title>
+
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/modules/auth.css" />
+  </head>
+  <body data-studyhub-page="login">
+    <main class="auth-page">
+      <section class="auth-card anim-pop-in" aria-labelledby="auth-heading">
+        <a href="./" class="auth-logo">StudyHub</a>
+        <h1 id="auth-heading" class="auth-heading">Welcome back 👋</h1>
+        <p id="auth-subheading" class="auth-subheading">
+          Log in to see your tasks, notes and progress on any device.
+        </p>
+
+        <div class="auth-tabs" role="tablist" aria-label="Log in or sign up">
+          <button
+            type="button"
+            class="auth-tab auth-tab-active"
+            id="auth-tab-login"
+            role="tab"
+            aria-selected="true"
+            data-mode="login"
+          >
+            Log in
+          </button>
+          <button
+            type="button"
+            class="auth-tab"
+            id="auth-tab-signup"
+            role="tab"
+            aria-selected="false"
+            data-mode="signup"
+          >
+            Sign up
+          </button>
+        </div>
+
+        <form id="auth-form" class="auth-form" novalidate>
+          <label class="auth-field" id="auth-name-field" hidden>
+            <span>Your name</span>
+            <input
+              id="auth-name"
+              name="name"
+              type="text"
+              autocomplete="name"
+              maxlength="60"
+              placeholder="Priya"
+            />
+          </label>
+
+          <label class="auth-field">
+            <span>Email</span>
+            <input
+              id="auth-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              placeholder="you@college.edu"
+            />
+          </label>
+
+          <label class="auth-field">
+            <span>Password</span>
+            <input
+              id="auth-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              minlength="8"
+              required
+              placeholder="At least 8 characters"
+            />
+          </label>
+
+          <p
+            id="auth-message"
+            class="auth-message"
+            role="alert"
+            aria-live="polite"
+          ></p>
+
+          <button id="auth-submit" type="submit" class="auth-submit">
+            Log in
+          </button>
+        </form>
+
+        <p id="auth-local-note" class="auth-local-note" hidden>
+          Log in works on the Netlify site. Here (Live Server) StudyHub saves in
+          this browser only.
+          <a href="./">Open StudyHub →</a>
+        </p>
+      </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/login.js"></script>
+  </body>
+</html>
