@@ -380,24 +380,46 @@
   padding: 0 2px;
 }
 
-/* ===== Hover icons ===== */
+/* ===== Hover icons =====
+ * They float over the top-right corner, so the title can use the full
+ * card width (before, the hidden icons still took 150px and squeezed it). */
 .notes-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
   display: flex;
-  flex-shrink: 0;
   gap: 2px;
+  padding: 2px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.2s;
 }
 
 .notes-card:hover .notes-actions,
 .notes-card:focus-within .notes-actions {
   opacity: 1;
+  pointer-events: auto;
 }
 
-/* Phones and tablets have no hover, so always show the icons */
+/* Phones and tablets have no hover: always show the icons, on their own row */
 @media (hover: none) {
+  .notes-card-top {
+    flex-direction: column-reverse;
+  }
+
   .notes-actions {
+    position: static;
+    align-self: flex-end;
     opacity: 1;
+    pointer-events: auto;
+    background: none;
+    border: none;
+    box-shadow: none;
   }
 }
 
