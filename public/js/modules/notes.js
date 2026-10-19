@@ -160,7 +160,7 @@ function editNote(id) {
   notesSaveBtn.textContent = "Update note";
   notesCancelBtn.hidden = false;
   notesTitleInput.focus();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  notesEditorBody.scrollIntoView({ behavior: "smooth" });
 }
 
 // Make a copy of a note
