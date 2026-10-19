@@ -1,27 +1,45 @@
 /* Sujan – Daily Quote */
 
 .quote-card {
+  position: relative;
+  overflow: hidden;
   margin: 0;
-  padding: 20px 24px;
-  background: var(--card-bg);
+  padding: 24px 28px;
+  background: linear-gradient(135deg, var(--primary-soft), var(--card-bg) 70%);
   color: var(--text);
   border: 1px solid var(--border);
   border-left: 4px solid var(--primary);
-  border-radius: 12px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Big decorative quote mark */
+.quote-card::before {
+  content: "\201C";
+  position: absolute;
+  top: -28px;
+  right: 18px;
+  font-family: Georgia, serif;
+  font-size: 160px;
+  line-height: 1;
+  color: var(--primary);
+  opacity: 0.12;
+  pointer-events: none;
 }
 
 .quote-label {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 1px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--primary);
 }
 
 .quote-text {
-  margin: 0 0 8px;
-  font-size: 18px;
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: 500;
   line-height: 1.5;
 }
 
