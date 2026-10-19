@@ -1,1 +1,98 @@
-/* Sai Priyan – Dashboard layout and navigation */
+/* 1. Basic page layout */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-rows: 64px 1fr;
+  grid-template-areas:
+    "header header"
+    "sidebar main";
+}
+
+/* 2. Header */
+
+.app-header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  box-sizing: border-box;
+}
+
+/* 3. Profile information */
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 4. Sidebar */
+
+.sidebar {
+  grid-area: sidebar;
+  min-height: calc(100vh - 64px);
+  box-sizing: border-box;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.sidebar nav a {
+  display: block;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+/* 5. Main dashboard content */
+
+main {
+  grid-area: main;
+  min-width: 0;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+main section {
+  margin-bottom: 24px;
+}
+
+#dashboard h1 {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+/* 6. Dashboard summary cards */
+
+.dashboard-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.summary-card {
+  padding: 20px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Remove underline from the StudyHub logo */
+.logo {
+  text-decoration: none;
+}
+

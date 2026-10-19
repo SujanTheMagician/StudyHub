@@ -17,11 +17,62 @@
     <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
-    <!-- Sai Priyan – header, sidebar and dashboard layout go here -->
+    <header class="app-header">
+      <a href="#dashboard" class="logo">StudyHub</a>
+
+      <!-- Profile information will be populated dynamically -->
+      <div class="user-info">
+        <img
+          id="profile-pic"
+          src=""
+          alt="Profile Picture"
+          class="profile-pic"
+        />
+
+        <span id="user-name" class="user-name"></span>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <nav aria-label="Main navigation">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#quote">Daily Quote</a>
+        <a href="#todo">To-Do List</a>
+        <a href="#timer">Focus Timer</a>
+        <a href="#notes">Notes</a>
+        <a href="#habits">Habit Tracker</a>
+        <a href="#calendar">Calendar and Planner</a>
+        <a href="#stats">Progress and Stats</a>
+      </nav>
+    </aside>
 
     <main>
-      <!-- Sai Priyan – Dashboard home -->
-      <section id="dashboard"></section>
+      <!-- Sai Priyan - Dashboard home -->
+      <section id="dashboard">
+        <h1>Dashboard</h1>
+        <!-- Summary cards: presentation structure only -->
+        <div class="dashboard-summary">
+          <article class="summary-card">
+            <h2>Tasks</h2>
+            <p>Summary</p>
+          </article>
+
+          <article class="summary-card">
+            <h2>Focus Time</h2>
+            <p>Summary</p>
+          </article>
+
+          <article class="summary-card">
+            <h2>Habits</h2>
+            <p>Summary</p>
+          </article>
+
+          <article class="summary-card">
+            <h2>Progress</h2>
+            <p>Summary</p>
+          </article>
+        </div>
+      </section>
 
       <!-- Sujan – Daily Quote -->
       <section id="quote"></section>
