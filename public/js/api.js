@@ -8,12 +8,26 @@
 // to the backend API ('/api/...'). Your module code will not need to change.
 
 // Load a list by name, for example loadData("tasks").
-// Returns an empty array [] if nothing has been saved yet.
+// Returns an empty array [] if nothing has been saved yet, or if the saved
+// data is broken or the browser blocks storage (private mode).
 function loadData(name) {
-  return JSON.parse(localStorage.getItem("studyhub-" + name)) || [];
+  try {
+    const saved = JSON.parse(localStorage.getItem("studyhub-" + name));
+    return saved === null ? [] : saved;
+  } catch (error) {
+    console.warn("StudyHub: could not load " + name, error);
+    return [];
+  }
 }
 
 // Save a list by name, for example saveData("tasks", tasks).
+// Returns true if it saved, false if the browser refused (storage full or blocked).
 function saveData(name, data) {
-  localStorage.setItem("studyhub-" + name, JSON.stringify(data));
+  try {
+    localStorage.setItem("studyhub-" + name, JSON.stringify(data));
+    return true;
+  } catch (error) {
+    console.warn("StudyHub: could not save " + name, error);
+    return false;
+  }
 }
