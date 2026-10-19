@@ -1,0 +1,19 @@
+{
+  "name": "studyhub",
+  "private": true,
+  "type": "module",
+  "description": "StudyHub – student productivity dashboard (frontend in public/, API in server/ and netlify/)",
+  "scripts": {
+    "dev": "netlify dev",
+    "db:migrate": "netlify database migrations apply",
+    "test:api": "node server/test-api.js"
+  },
+  "dependencies": {
+    "@netlify/database": "2.0.1",
+    "express": "4.22.1",
+    "serverless-http": "4.0.0"
+  },
+  "engines": {
+    "node": ">=20.12.2"
+  }
+}

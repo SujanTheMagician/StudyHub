@@ -81,7 +81,38 @@ let tasks = loadData("tasks"); // load (returns [] if nothing saved yet)
 saveData("tasks", tasks);      // save
 ```
 
-Later, Sujan changes only `api.js` to talk to the backend, and your module keeps working.
+Phase 3 is live: when a student is logged in, `api.js` also saves `tasks`, `focus`, `notes`, `habits` and `events` to the database. You change nothing. Two rules matter more now:
+
+- Every item needs a whole-number `id` (use `Date.now()`), or the server refuses the save.
+- Always save the **whole list** (`saveData("tasks", tasks)`). The database keeps exactly what you save, in the same order.
+
+On Live Server there is no backend, so the app saves in the browser only (like before) and you never see the login page.
+
+## Backend (Sujan)
+
+| Part | Where |
+| --- | --- |
+| Live site | https://studyhub-students.netlify.app (every PR also gets a preview link) |
+| Login page | `public/login.html`, `public/js/login.js`, `public/css/modules/auth.css` |
+| API (Express) | `server/app.js`, run by `netlify/functions/api.js` at `/api/*` |
+| Passwords and sessions | `server/auth.js` (scrypt hashes, signed HttpOnly cookie) |
+| Database (Postgres) | Netlify Database. Tables are in `netlify/database/migrations/` and are applied on every deploy; deploy previews get their own copy of the data |
+| Secret | `SESSION_SECRET` is set in Netlify environment variables. Never commit it |
+
+API: `POST /api/signup`, `POST /api/login`, `POST /api/logout`, `GET /api/me`, `GET /api/data`, `GET /api/data/:name`, `PUT /api/data/:name`.
+
+Run the full app with the backend on your laptop:
+
+```
+npm install
+npx netlify-cli login
+npx netlify-cli link --name studyhub-students
+npm run dev                # http://localhost:8888 with a local database
+npm run db:migrate         # once, in a second terminal: create the tables
+npm run test:api           # checks signup, login, saving and privacy
+```
+
+To change the database, add a new file such as `netlify/database/migrations/0002_add_subject.sql`. Never edit a migration that is already live.
 
 ## How to run the app
 
